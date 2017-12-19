@@ -1,0 +1,20 @@
+{
+    "name"          : "node-red-contrib-easyimage",
+    "author"        : "Andy Feltham <andy.feltham@filament.uk.com>",
+    "license"       : "Apache-2.0",
+    "version"       : "0.0.1",
+    "description"   : "A simple node that wraps functionality provided by EasyImage / ImageMagik",
+    "dependencies": {
+        "easyimage"   : "*"
+    },
+    "keywords": [ "node-red" ],
+    "node-red"     : {
+        "nodes": {
+            "easyimage": "easyimage/easyimage.js"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hardillb/node-red-contrib-alexa-home-skill"
+    }
+}

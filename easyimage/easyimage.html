@@ -1,0 +1,111 @@
+<script type="text/javascript">
+    RED.nodes.registerType('easyimage',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {
+                value: ""
+            },
+            api : {
+                value: "",
+                required: true
+            }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "Easy Image";
+        },
+        oneditprepare: function() {
+            var node = this;
+            node.apiOptions = {
+                info: {
+                    desc: "To retrieve information about an image.",
+                    name: "Info"
+                },
+                convert: {
+                    desc: "To convert an image from one format to another.",
+                    name: "Convert"
+                },
+                resize: {
+                    desc: "To resize an image.",
+                    name: "Resize"
+                },
+                crop: {
+                    desc: "To crop an image.",
+                    name: "Crop"
+                },
+                thumbnail: {
+                    desc: "To create square thumbnails.",
+                    name: "Thumbnail"
+                },
+                rescrop: {
+                    desc: "To resize and crop and image in one go.",
+                    name: "Resize & Crop"
+                },
+                rotate: {
+                    desc: "To rotate an image.",
+                    name: "Rotate"
+                },
+                exec: {
+                    desc: "When you want to call a custom command to ImageMagick",
+                    name: "Exec"
+                }
+            };
+            
+            $("#node-input-api").empty();
+            var option1 = new Option("Select an API to call", null);
+            $(option1).prop('selected', true);
+            $(option1).prop('disabled', true);
+            $("#node-input-api").append(option1);
+
+            var apis = Object.keys(node.apiOptions);
+            for (var i = 0; i < apis.length; i++) {
+                var api = node.apiOptions[apis[i]];
+                var option = new Option(api.name, apis[i]);
+                if(apis[i] === node.api){
+                    $(option).prop('selected', true);
+                }
+                $("#node-input-api").append(option);
+            }
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="easyimage">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-api"><i class="fa fa-server"></i> API</label>
+        <select id="node-input-api">
+            <option selected disabled>Select an API to call</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="easyimage">
+    <p>A node that calls ImageMagic via the '<a href="https://github.com/hacksparrow/node-easyimage/">easyimage</a>' api.</p>
+    <p>The msg.payload is expected to be the options that are passed to the respective functions in easyimage.</p>
+    <p>The EasyImage options object can have these properties depending on the method. Unrelated options are ignored.</p>
+    <pre>
+src - path to source image.
+dst - path to destination image.
+width - width of resized image.
+height - height of resized image.
+degree - degree of rotation.
+cropwidth - width of cropped image, if missing, width will be used instead.
+cropheight - height of cropped image, if missing, height will be used instead.
+x - x offset for cropping, defaults to 0.
+y - y offset for cropping, defaults to 0.
+quality - quality of processed image, 1 to 100.
+gravity - crop position [NorthWest | North | NorthEast | West | Center | East | SouthWest | South | SouthEast], defaults to Center.
+fill - fill area flag, image is resized to completely fill the target crop dimensions, defaults to false.
+background - background color, defaults to "white". If specified, automatically flattens the image.
+flatten - if present, the image will be flattened (flattening removes alpha channel). Defaults to false.
+ignoreAspectRatio - if set to true, resize will ignore aspect ratio
+    </pre>
+</script>
